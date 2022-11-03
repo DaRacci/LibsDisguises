@@ -1,0 +1,17 @@
+name: Sync with Upstream
+
+on:
+  schedule:
+    - cron: '0,30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Fork Sync
+        uses: tgymnich/fork-sync@v1.6.3
