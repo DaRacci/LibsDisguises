@@ -1792,10 +1792,9 @@ public class ReflectionManager {
         return null;
     }
 
-    @Deprecated
     public static Object createSoundEffect(String minecraftKey) {
         if (nmsReflection != null) {
-            return nmsReflection.createSoundEffect(minecraftKey);
+            return nmsReflection.createSoundEvent(minecraftKey);
         }
 
         try {
@@ -1805,6 +1804,14 @@ public class ReflectionManager {
         }
 
         return null;
+    }
+
+    public static Object createSoundEvent(String name) {
+        if (nmsReflection != null) {
+            return nmsReflection.createSoundEvent(name);
+        }
+
+        return createMinecraftKey(name);
     }
 
     public static Object createMinecraftKey(String name) {
@@ -2432,6 +2439,11 @@ public class ReflectionManager {
 
                 if (soundStrength != null) {
                     sound.setDamageAndIdleSoundVolume(soundStrength);
+
+                    // This should only display on custom builds
+                    if (disguiseType == DisguiseType.COW && soundStrength != 0.4F && !LibsDisguises.getInstance().isNumberedBuild()) {
+                        DisguiseUtilities.getLogger().severe("The hurt sound volume may be wrong on the COW disguise! Bad nms update?");
+                    }
                 }
             }
 
